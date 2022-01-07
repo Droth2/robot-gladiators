@@ -73,19 +73,23 @@ var fightOrSkip = function() {
 
   promptFight = promptFight.toLowerCase();
 
-  if (promptFight === "skip" || promtFight === "SKIP") {
+  if (promptFight === "skip") {
     var confirmSkip = window.confirm("are you sure you'd like to quit?");
     if (confirmSkip) {
-      window.alert(playerInfor.name + " has decided to skip this fight. Goodbye!");
-      playerInfo.playerMoney = playerInfo.money - 10;
-      shop();
+      window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
+      playerInfo.playerMoney = Math.max(0, playerInfo.money - 10);
+      
+      return true;
     }
   }
-}
+  return false;
+};
 
 var fight = function(enemy) {
   while(playerInfo.health > 0 && enemy.health > 0) {
-    fightOrSkip();
+    if (fightOrSkip()) {
+      break;
+    };
 
     // generate random damage value based on player's attack power
     var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
@@ -175,7 +179,7 @@ var endGame = function () {
     // restart game 
     startGame();
   } else {
-    window.alert("Thank you for playing RObot Gladiators! Come back soon!");
+    window.alert("Thank you for playing Robot Gladiators! Come back soon!");
   }
 }
 
